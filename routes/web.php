@@ -16,6 +16,8 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::resource('orders', 'OrdersController');
+
     Route::get('cart', 'CartController@show');
     Route::post('cart/{product}/add', 'AddToCartController');
     Route::post('cart/{product}/remove', 'RemoveFromCartController');
