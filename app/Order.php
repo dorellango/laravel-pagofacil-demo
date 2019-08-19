@@ -13,8 +13,23 @@ class Order extends Model
      */
     protected $guarded = [];
 
+    /**
+     * Belongs to a owner
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Has many products
+     *
+     * @return Illuminate\Datbase\Eloquent\Collection
+     */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
     }
 }
