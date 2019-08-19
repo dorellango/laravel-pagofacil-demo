@@ -16,6 +16,11 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('cart', 'CartController@show');
     Route::post('cart/{product}/add', 'AddToCartController');
     Route::post('cart/{product}/remove', 'RemoveFromCartController');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
