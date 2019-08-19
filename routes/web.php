@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('cart/{product}/add', 'AddToCartController');
+    Route::post('cart/{product}/remove', 'RemoveFromCartController');
+});
