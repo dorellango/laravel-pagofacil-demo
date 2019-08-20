@@ -14,17 +14,17 @@ class AddToCartController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Product $product, Request $request)
+    public function __invoke(Product $product)
     {
-        $validated = $request->validate(['quantity' => 'required']);
-
-        CartFacade::session(auth()->id());
+        if (auth()->check()) {
+            CartFacade::session(auth()->id());
+        }
 
         CartFacade::add(
             $product->id,
             $product->name,
             $product->price,
-            $validated['quantity']
+            1
         );
 
         return redirect()->back();

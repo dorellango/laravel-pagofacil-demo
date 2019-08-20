@@ -19,7 +19,7 @@ class ManageCartTest extends TestCase
         $product = factory(Product::class)->create();
 
         $this->actingAs($user)
-        ->post("cart/$product->id/add", ['quantity' => 10])
+        ->get("cart/$product->id/add")
         ->assertStatus(302);
 
         $this->assertFalse(CartFacade::isEmpty());
@@ -50,16 +50,5 @@ class ManageCartTest extends TestCase
         ->assertStatus(302);
 
         $this->assertTrue(CartFacade::isEmpty());
-    }
-
-    /** @test */
-    public function it_require_a_quantity()
-    {
-        $user = factory(User::class)->create();
-        $product = factory(Product::class)->create();
-
-        $this->actingAs($user)
-        ->post("cart/$product->id/add")
-        ->assertSessionHasErrors('quantity');
     }
 }
