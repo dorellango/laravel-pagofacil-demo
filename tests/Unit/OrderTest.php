@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Order;
+use App\Product;
 use App\User;
 use Illuminate\Database\Eloquent\Collection;
 use Tests\TestCase;
@@ -26,5 +27,16 @@ class OrderTest extends TestCase
         $order = factory(Order::class)->create();
 
         $this->assertInstanceOf(Collection::class, $order->products);
+    }
+
+    /** @test */
+    public function it_can_calculate_the_subtotal()
+    {
+        $product = factory(Product::class)->create(['price' => 10000]);
+        $order = factory(Order::class)->create();
+
+        $order->products()->attach($product, ['quantity' => 3]);
+
+        $this->assertEquals('30000', $order->subtotal);
     }
 }

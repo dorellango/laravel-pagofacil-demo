@@ -15,7 +15,9 @@ Route::get('/', 'WelcomeController');
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('orders', 'OrdersController');
-
+    Route::get('checkout/callback', 'CheckoutPaymentController@callback');
+    Route::get('checkout/complete', 'CheckoutPaymentController@complete');
+    Route::get('checkout/cancel', 'CheckoutPaymentController@cancel');
     Route::get('checkout/process', 'CheckoutProcessController');
     Route::get('cart', 'CartController@show');
     Route::post('cart/{product}/add', 'AddToCartController');

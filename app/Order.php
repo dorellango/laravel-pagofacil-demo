@@ -32,4 +32,16 @@ class Order extends Model
     {
         return $this->belongsToMany(Product::class)->withPivot(['quantity']);
     }
+
+    /**
+     * Get subtotal attribute
+     *
+     * @return int
+     */
+    public function getSubtotalAttribute() : int
+    {
+        return $this->products->reduce(function ($accumulator, $product) {
+            return $accumulator += $product->price * $product->pivot->quantity;
+        }, 0);
+    }
 }

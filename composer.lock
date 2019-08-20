@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9ab719c61b3c4c1ebad869c6f1732750",
+    "content-hash": "191a2a3db5df04bf14f4bcc2920a842d",
     "packages": [
         {
             "name": "darryldecode/cart",
@@ -1075,6 +1075,35 @@
                 "serialize"
             ],
             "time": "2019-07-09T21:58:11+00:00"
+        },
+        {
+            "name": "pagofacil/php-sdk",
+            "version": "v0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PSTPAGOFACIL/SDK-PHP.git",
+                "reference": "af1fab9b061b37db0382c91ba589b904c2e23ec7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PSTPAGOFACIL/SDK-PHP/zipball/af1fab9b061b37db0382c91ba589b904c2e23ec7",
+                "reference": "af1fab9b061b37db0382c91ba589b904c2e23ec7",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PagoFacil\\lib\\": "classes"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Stephanie Piñero",
+                    "email": "stephanie@pagofacil.cl"
+                }
+            ],
+            "time": "2018-07-10T20:49:15+00:00"
         },
         {
             "name": "paragonie/random_compat",
