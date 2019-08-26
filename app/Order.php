@@ -52,7 +52,7 @@ class Order extends Model
      *
      * @return int
      */
-    public function getSubtotalAttribute() : int
+    public function getSubtotal() : int
     {
         return $this->products->reduce(function ($accumulator, $product) {
             return $accumulator += $product->price * $product->pivot->quantity;
@@ -62,7 +62,7 @@ class Order extends Model
     public function saveSubtotal()
     {
         $this->update([
-            'subtotal' => $this->getSubtotalAttribute()
+            'subtotal' => $this->getSubtotal()
         ]);
     }
 

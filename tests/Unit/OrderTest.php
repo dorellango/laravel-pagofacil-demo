@@ -37,6 +37,6 @@ class OrderTest extends TestCase
 
         $order->products()->attach($product, ['quantity' => 3]);
 
-        $this->assertEquals('30000', $order->subtotal);
+        $this->assertEquals('30000', $order->fresh()->getSubtotal());
     }
 }
