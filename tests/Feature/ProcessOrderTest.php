@@ -24,7 +24,7 @@ class ProcessOrderTest extends TestCase
             $product->id,
             $product->name,
             $product->price,
-            10
+            1
         );
 
         $this->actingAs($user)

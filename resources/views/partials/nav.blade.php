@@ -32,7 +32,7 @@
                 <a class="no-underline text-gray-300 text-sm p-3" href="{{ route('cart.show') }}">
                   {{ __('Cart') }}
                   <span class="ml-2 bg-indigo-500 text-indigo-100 px-2 py-1 text-sm rounded-full leading-normal font-mono">
-                    {{ Auth::check() ? Cart::session(Auth::id())->getContent()->count() : Cart::getContent()->count() }}
+                    {{ $cartCount }}
                   </span>
                 </a>
           </div>

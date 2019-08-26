@@ -41,7 +41,7 @@ class CheckoutProcessController extends Controller
     {
         $request = new Request();
         $request->account_id = config('pagofacil.token.service');
-        $request->amount = $order->fresh()->subtotal;
+        $request->amount = $order->fresh()->getSubtotal();
         $request->currency = 'CLP';
         $request->reference = $order->order;
         $request->customer_email = $order->owner->email;
