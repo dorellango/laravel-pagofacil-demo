@@ -46,8 +46,8 @@ class ManageCartTest extends TestCase
         $this->assertFalse(CartFacade::isEmpty());
 
         $this->actingAs($user)
-        ->post("cart/$product->id/remove")
-        ->assertStatus(302);
+        ->get("cart/$product->id/remove")
+        ->assertRedirect('/cart');
 
         $this->assertTrue(CartFacade::isEmpty());
     }

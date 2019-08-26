@@ -19,6 +19,8 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        'checkout/callback'
+        'checkout/callback',
+        'checkout/complete',
+        'checkout/cancel'
     ];
 }

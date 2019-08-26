@@ -19,6 +19,6 @@ class RemoveFromCartController extends Controller
         CartFacade::session(auth()->id());
         CartFacade::remove($product->id);
 
-        return redirect()->back();
+        return redirect(route('cart.show'));
     }
 }

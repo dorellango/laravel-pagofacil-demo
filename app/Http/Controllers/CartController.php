@@ -8,7 +8,9 @@ class CartController extends Controller
 {
     public function show()
     {
-        CartFacade::session(auth()->id());
+        if (auth()->check()) {
+            CartFacade::session(auth()->id());
+        }
 
         $products = CartFacade::getContent();
 

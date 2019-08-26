@@ -15,15 +15,15 @@ Route::get('/', 'WelcomeController');
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('orders', 'OrdersController');
-    Route::get('checkout/callback', 'CheckoutPaymentController@callback');
-    Route::get('checkout/complete', 'CheckoutPaymentController@complete');
+    Route::post('checkout/callback', 'CheckoutPaymentController@callback');
+    Route::post('checkout/complete', 'CheckoutPaymentController@complete');
     Route::get('checkout/cancel', 'CheckoutPaymentController@cancel');
-    Route::get('checkout/process', 'CheckoutProcessController');
+    Route::get('checkout/process/{order?}', 'CheckoutProcessController')->name('checkout.process');
 });
 
-Route::get('cart', 'CartController@show');
+Route::get('cart', 'CartController@show')->name('cart.show');
 Route::get('cart/{product}/add/{quantity?}', 'AddToCartController')->name('cart.add');
-Route::post('cart/{product}/remove', 'RemoveFromCartController');
+Route::get('cart/{product}/remove', 'RemoveFromCartController');
 
 Auth::routes();
 

@@ -7,6 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     /**
+     * Boot the model
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($order) {
+            $order->saveSubtotal();
+        });
+    }
+
+    /**
      * Don't apply mass assigment
      *
      * @var array
@@ -43,5 +57,24 @@ class Order extends Model
         return $this->products->reduce(function ($accumulator, $product) {
             return $accumulator += $product->price * $product->pivot->quantity;
         }, 0);
+    }
+
+    public function saveSubtotal()
+    {
+        $this->update([
+            'subtotal' => $this->getSubtotalAttribute()
+        ]);
+    }
+
+    /**
+     * Mark a order as completed
+     *
+     * @return void
+     */
+    public function markAsCompleted()
+    {
+        $this->update([
+            'completed_at' => now()
+        ]);
     }
 }
