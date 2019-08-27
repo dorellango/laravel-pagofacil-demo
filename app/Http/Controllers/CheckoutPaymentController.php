@@ -21,7 +21,7 @@ class CheckoutPaymentController extends Controller
         $this->validateSignature($request);
 
         if (!$order = $this->getOrder($request->get('x_reference'))) {
-            throw new Exception('The given order does not exist', 1);
+            throw new Exception('The given order does not exist', 422);
         }
 
         $order->markAsCompleted();
@@ -68,7 +68,7 @@ class CheckoutPaymentController extends Controller
         $transaction = new Transaction();
         $transaction->setToken(config('pagofacil.token.secret'));
         if (!$transaction->validate($request->all())) {
-            throw new Exception('Invalid signature', 1);
+            throw new Exception('Invalid signature', 422);
         }
     }
 
