@@ -28,14 +28,37 @@ class PlaceOrderTest extends TestCase
         );
 
         $this->actingAs($user)
-        ->get('place-order');
+        ->get('place-order')
+        ->assertStatus(302);
 
         $this->assertDatabaseHas('orders', ['user_id' => $user->id]);
 
         $this->assertDatabaseHas('order_product', [
             'order_id' => Order::first()->id,
             'product_id' => $product->id,
-            'quantity' => 10
+            'quantity' => 10,
+            'price' => $product->price,
         ]);
+    }
+
+    /** @test */
+    public function cart_should_be_flushed()
+    {
+        $user = factory(User::class)->create();
+        $product = factory(Product::class)->create();
+
+        CartFacade::session($user->id);
+        CartFacade::add(
+            $product->id,
+            $product->name,
+            $product->price,
+            10
+        );
+
+        $this->actingAs($user)
+        ->get('place-order')
+        ->assertStatus(302);
+
+        $this->assertTrue(CartFacade::isEmpty());
     }
 }

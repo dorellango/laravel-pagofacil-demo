@@ -35,8 +35,22 @@ class OrderTest extends TestCase
         $product = factory(Product::class)->create(['price' => 10000]);
         $order = factory(Order::class)->create();
 
-        $order->products()->attach($product, ['quantity' => 3]);
+        $order->products()->attach($product, [
+            'quantity' => 3,
+            'price' => 10000
+            ]);
 
         $this->assertEquals('30000', $order->fresh()->getSubtotal());
+    }
+
+    /** @test */
+    public function it_has_a_path()
+    {
+        $order = factory(Order::class)->create();
+
+        $this->assertEquals(
+            $order->path(),
+            route('orders.show', $order)
+        );
     }
 }

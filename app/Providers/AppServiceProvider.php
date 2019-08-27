@@ -28,8 +28,8 @@ class AppServiceProvider extends ServiceProvider
             $view->with(
                 'cartCount',
                 auth()->check()
-                    ? CartFacade::session(auth()->id())->getContent()->count()
-                    : CartFacade::getContent()->count()
+                    ? CartFacade::session(auth()->id())->getTotalQuantity()
+                    : CartFacade::getTotalQuantity()
             );
         });
     }

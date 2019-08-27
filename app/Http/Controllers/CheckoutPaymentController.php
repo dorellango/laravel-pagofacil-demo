@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Order;
-use Darryldecode\Cart\Facades\CartFacade;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -21,7 +20,7 @@ class CheckoutPaymentController extends Controller
     {
         $this->validateSignature($request);
 
-        if (! $order = $this->getOrder($request->get('x_reference'))) {
+        if (!$order = $this->getOrder($request->get('x_reference'))) {
             throw new Exception('The given order does not exist', 1);
         }
 
@@ -41,7 +40,6 @@ class CheckoutPaymentController extends Controller
         Log::debug($request->all());
 
         if ($order = $this->getOrder($request->get('x_reference'))) {
-            CartFacade::session(auth()->id())->clear();
             return view('checkout.completed', compact('order'));
         }
 

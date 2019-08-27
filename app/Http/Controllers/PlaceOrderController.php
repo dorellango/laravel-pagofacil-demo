@@ -22,9 +22,16 @@ class PlaceOrderController extends Controller
         $this->getCartItems()->each(function ($product) use ($order) {
             $order->products()->attach(
                 $product['id'],
-                ['quantity' => $product['quantity']]
+                [
+                    'quantity' => $product['quantity'],
+                    'price' => $product['price']
+                ]
             );
         });
+
+        CartFacade::session(auth()->id())->clear();
+
+        return redirect($order->path());
     }
 
     public function getCartItems()

@@ -24,7 +24,7 @@
         @if($products->count() > 0)
           <a
             class="bg-indigo-600 px-4 py-2 leading-normal text-lg font-mono mt-2 inline-block rounded text-indigo-200 hover:bg-indigo-500"
-            href="{{ route('place-order')}}"> Process payment</a>
+            href="{{ route('place-order')}}"> Place Order</a>
         @endif
     </div>
 </div>

@@ -44,7 +44,8 @@ class Order extends Model
      */
     public function products()
     {
-        return $this->belongsToMany(Product::class)->withPivot(['quantity']);
+        return $this->belongsToMany(Product::class)
+            ->withPivot(['quantity', 'price']);
     }
 
     /**
@@ -55,7 +56,7 @@ class Order extends Model
     public function getSubtotal() : int
     {
         return $this->products->reduce(function ($accumulator, $product) {
-            return $accumulator += $product->price * $product->pivot->quantity;
+            return $accumulator += $product->pivot->price * $product->pivot->quantity;
         }, 0);
     }
 
@@ -76,5 +77,15 @@ class Order extends Model
         $this->update([
             'completed_at' => now()
         ]);
+    }
+
+    /**
+     * Order path
+     *
+     * @return string
+     */
+    public function path()
+    {
+        return route('orders.show', $this);
     }
 }

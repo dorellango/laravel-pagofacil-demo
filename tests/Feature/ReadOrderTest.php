@@ -7,7 +7,7 @@ use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class OrdersListTest extends TestCase
+class ReadOrderTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -23,6 +23,21 @@ class OrdersListTest extends TestCase
         ->assertViewIs('orders.index')
         ->assertViewHas('orders', function ($orders) use ($order) {
             return $orders->contains($order);
+        });
+    }
+
+    /** @test */
+    public function it_can_view_a_single_order()
+    {
+        $order = factory(Order::class)->create();
+
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user)
+        ->get($order->path())
+        ->assertViewIs('orders.show')
+        ->assertViewHas('order', function ($viewable) use ($order) {
+            return $viewable->is($order);
         });
     }
 }
