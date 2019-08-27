@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Order;
-use Darryldecode\Cart\Facades\CartFacade;
-use PagoFacil\lib\Request;
+use PagoFacil\lib\Request as PagoFacilRequest;
 use PagoFacil\lib\Transaction;
 
 class CheckoutProcessController extends Controller
@@ -14,32 +13,14 @@ class CheckoutProcessController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Order $order = null)
+    public function __invoke(Order $order)
     {
-        if (!$order) {
-            $order = auth()->user()->orders()->create([
-                'order' => str_random(20)
-            ]);
-
-            $this->getCartItems()->each(function ($product) use ($order) {
-                $order->products()->attach(
-                    $product['id'],
-                    ['quantity' => $product['quantity']]
-                );
-            });
-        }
-
         $this->processPayment($order);
-    }
-
-    public function getCartItems()
-    {
-        return CartFacade::session(auth()->id())->getContent();
     }
 
     public function processPayment(Order $order)
     {
-        $request = new Request();
+        $request = new PagoFacilRequest();
         $request->account_id = config('pagofacil.token.service');
         $request->amount = $order->fresh()->getSubtotal();
         $request->currency = 'CLP';
@@ -54,7 +35,7 @@ class CheckoutProcessController extends Controller
         $this->initTransaction($request);
     }
 
-    public function initTransaction(Request $request)
+    public function initTransaction(PagoFacilRequest $request)
     {
         $transaction = new Transaction($request);
         $transaction->environment = 'DESARROLLO';

@@ -4,35 +4,73 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use Darryldecode\Cart\Facades\CartFacade;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use PagoFacil\lib\Transaction;
 
 class CheckoutPaymentController extends Controller
 {
+    /**
+     * Callback endpoint
+     *
+     * @param Request $request
+     * @return void
+     */
     public function callback(Request $request)
     {
-        $transaction = new Transaction($request->all());
-        $transaction->setToken(env('pagofacil.token.secret'));
+        $this->validateSignature($request);
 
-        if ($transaction->validate($request->all())) {
-            error_log('TRANSACCION CORRECTA');
-        } else {
-            error_log('ERROR FIRMA');
+        if (! $order = $this->getOrder($request->get('x_reference'))) {
+            throw new Exception('The given order does not exist', 1);
         }
+
+        $order->markAsCompleted();
     }
 
+    /**
+     * Complete view
+     *
+     * @param Request $request
+     * @return void
+     */
     public function complete(Request $request)
     {
-        $transaction = new Transaction($request->all());
-        $transaction->setToken(env('pagofacil.token.secret'));
+        $this->validateSignature($request);
 
-        $order = Order::whereOrder($request->get('x_reference'))
-            ->first();
+        Log::debug($request->all());
 
-        if ($order) {
-            $order->markAsCompleted();
+        if ($order = $this->getOrder($request->get('x_reference'))) {
             CartFacade::session(auth()->id())->clear();
             return view('checkout.completed', compact('order'));
+        }
+
+        return 'The given order does not exist';
+    }
+
+    /**
+     * Get order by number
+     *
+     * @param string $referenceOrder
+     * @return App\Order
+     */
+    private function getOrder($referenceOrder)
+    {
+        return Order::whereOrder($referenceOrder)->first();
+    }
+
+    /**
+     * Validate the given signature from request
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function validateSignature(Request $request)
+    {
+        $transaction = new Transaction();
+        $transaction->setToken(config('pagofacil.token.secret'));
+        if (!$transaction->validate($request->all())) {
+            throw new Exception('Invalid signature', 1);
         }
     }
 

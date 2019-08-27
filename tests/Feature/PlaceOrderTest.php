@@ -2,19 +2,19 @@
 
 namespace Tests\Feature;
 
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Order;
 use App\Product;
 use App\User;
 use Darryldecode\Cart\Facades\CartFacade;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class ProcessOrderTest extends TestCase
+class PlaceOrderTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function can_process_a_order()
+    public function can_place_an_order()
     {
         $user = factory(User::class)->create();
         $product = factory(Product::class)->create();
@@ -24,11 +24,11 @@ class ProcessOrderTest extends TestCase
             $product->id,
             $product->name,
             $product->price,
-            1
+            10
         );
 
         $this->actingAs($user)
-        ->get('checkout/process');
+        ->get('place-order');
 
         $this->assertDatabaseHas('orders', ['user_id' => $user->id]);
 
