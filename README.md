@@ -16,6 +16,7 @@ Dummy data
 
 `php artisan db:seed`
 
-`me@dorellango.cl/password`
+`me@dorellango.cl`
+`password`
 
 
