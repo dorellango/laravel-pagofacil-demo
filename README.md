@@ -4,7 +4,7 @@ This project uses the PagoFacil dedicated PHP SDK
 
 `https://github.com/PSTPAGOFACIL/SDK-PHP`
 
-# Pago Facil credentials
+# Pagofacil Tokens
 
 `config/pagofacil.php`
 
